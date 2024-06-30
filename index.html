@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "selector",
+      };
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-style: normal;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+      }
+
+      .timer {
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+      }
+
+      .timer input {
+        margin: 0 5px;
+      }
+    </style>
+  </head>
+
+  <body class="h-full dark:bg-gray-900 bg-white">
+    <main class="mx-auto flex min-h-full max-w-3xl flex-col gap-8 p-4">
+      <div
+        class="mx-auto w-fit rounded-md bg-base-200 px-4 py-2 text-lg font-bold text-base-content dark:text-white"
+      >
+        Timer App
+      </div>
+      <div class="mx-auto flex w-fit flex-col gap-2">
+        <div class="flex items-center justify-between dark:text-white">
+          <p class="flex-1 text-center text-neutral-content">hr</p>
+          <p class="flex-1 text-center text-neutral-content">min</p>
+          <p class="flex-1 text-center text-neutral-content">sec</p>
+        </div>
+
+        <div
+          class="flex items-center rounded-md border border-neutral bg-base-200 p-2"
+        >
+          <!-- <p class="text-lg">:</p> -->
+          <input
+            class="h-24 w-20 rounded-md bg-base-200 text-center text-5xl focus:bg-accent focus:text-accent-content focus:outline-none md:h-20 md:w-32 md:text-6xl lg:h-32 lg:w-40 lg:text-8xl"
+            name="hrs"
+            value="00"
+            type="text"
+            id="hours"
+            oninput="treplace(this)"
+          />
+          <p class="text-lg">:</p>
+          <input
+            class="h-24 w-20 rounded-md bg-base-200 text-center text-5xl focus:bg-accent focus:text-accent-content focus:outline-none md:h-20 md:w-32 md:text-6xl lg:h-32 lg:w-40 lg:text-8xl"
+            name="mins"
+            value="00"
+            type="text"
+            id="minutes"
+            oninput="treplace(this)"
+          />
+          <p class="text-lg">:</p>
+          <input
+            class="h-24 w-20 rounded-md bg-base-200 text-center text-5xl focus:bg-accent focus:text-accent-content focus:outline-none md:h-20 md:w-32 md:text-6xl lg:h-32 lg:w-40 lg:text-8xl"
+            name="secs"
+            value="00"
+            id="seconds"
+            type="text"
+            oninput="treplace(this)"
+          />
+        </div>
+        <div>
+          <input type="text" id="timerName" placeholder="Timer Name" />
+        </div>
+        <div class="flex gap-x-4 dark:text-white flex-row">
+          <div class="basis-1/2 flex">
+            <button class="btn btn-success" onclick="setD()">Settings</button>
+          </div>
+          <div class="basis-1/2 flex justify-end">
+            <button
+              class="btn overflow-hidden relative w-30 bg-blue-500 text-white py-3 px-3 rounded-xl font-bold camelcase -- before:block before:absolute before:h-full before:w-1/2 before:rounded-full before:bg-orange-400 before:top-0 before:left-1/4 before:transition-transform before:opacity-0 before:hover:opacity-100 hover:text-orange-200 hover:before:animate-ping transition-all duration-300"
+              onclick="addTimer()"
+            >
+              <span class="relative">Add Timer</span>
+            </button>
+            <!-- <button class="btnb btn-success" onclick="addTimer()">
+              Add Timer
+            </button> -->
+          </div>
+        </div>
+      </div>
+      <!-- The sub Timer -->
+      <div
+        class="grid grid-cols-1 dark:text-white gap-4 lg:grid-cols-3"
+        id="timers"
+      >
+        <div class="m-auto size-fit" style="opacity: 1; transform: none">
+          <div
+            class="relative flex size-[224px] flex-col gap-2 rounded-2xl bg-base-200 p-4"
+          >
+            <!-- <div
+              class="relative flex size-full flex-col items-center justify-center gap-1"
+            >
+              <svg
+                width="198"
+                height="198"
+                style="transform: rotate(-90deg)"
+                class="absolute"
+              >
+                <circle
+                  class="text-neutral-content"
+                  stroke="currentColor"
+                  stroke-width="4"
+                  fill="transparent"
+                  r="89.10000000000001"
+                  cx="99"
+                  cy="99"
+                ></circle>
+                <circle
+                  class="text-primary"
+                  stroke="currentColor"
+                  stroke-width="4"
+                  fill="transparent"
+                  r="89.10000000000001"
+                  cx="99"
+                  cy="99"
+                  stroke-dasharray="559.8318108697011"
+                  stroke-linecap="round"
+                  stroke-dashoffset="466.11596573011315"
+                ></circle>
+              </svg>
+              <div class="flex items-center justify-between gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-bell text-neutral-content"
+                >
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                </svg>
+                <p>7:04</p>
+              </div>
+              <div class="relative flex items-center justify-center">
+                <p class="text-base-content text-5xl">00:49</p>
+              </div>
+              <div><p class="text-sm text-neutral-content">01 mins</p></div>
+            </div> -->
+            <!-- <button
+              class="absolute bottom-3 left-3 flex size-7 items-center justify-center rounded-full bg-base-300 p-0 text-base-content"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-x"
+              >
+                <path d="M18 6 6 18"></path>
+                <path d="m6 6 12 12"></path>
+              </svg></button
+            ><button
+              class="absolute bottom-3 right-3 flex size-7 items-center justify-center rounded-full p-0 bg-success text-success-content"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-play"
+              >
+                <polygon points="6 3 20 12 6 21 6 3"></polygon>
+              </svg>
+            </button> -->
+          </div>
+        </div>
+        <!-- <div
+          class="m-auto size-fit"
+          style="opacity: 1; transform: none; transform-origin: 50% 50% 0px"
+        >
+          <div
+            class="relative flex size-[224px] flex-col gap-2 rounded-2xl bg-base-200 p-4"
+          >
+            <div id="timers"></div>
+            <!- <div id="timers" ondrop="drop(event)" ondragover="allowDrop(event)">  ->
+          </div>
+        </div> -->
+      </div>
+      <!-- The Modal -->
+      <div
+        id="smodal"
+        class="hidden fixed w-full h-full overflow-auto left-0 top-0 bg-black bg-black/40 modal"
+      >
+        <!-- Modal content -->
+        <div
+          class="bg-[#fefefe] border border-solid border-[#888] mx-auto my-[15%] w-2/5 rounded-md pb-6"
+        >
+          <div class="w-full flex justify-end pr-2">
+            <span
+              class="text-[#aaa] block text-xl font-bold hover:text-black focus:text-black hover:cursor-pointer focus:cursor-pointer"
+              onclick="clos()"
+              >&times;</span
+            >
+          </div>
+          <div class="flex flex-row gap-x-4 items-center pl-4">
+            <p>Dark Mode</p>
+            <button
+              class="w-20 h-10 rounded-full bg-white flex items-center transition duration-300 focus:outline-none shadow"
+              onclick="switchTheme()"
+            >
+              <div
+                id="switch-toggle"
+                class="w-6 h-6 relative rounded-full transition duration-500 transform bg-yellow-500 -translate-x-2 p-1 text-white"
+              ></div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="./js/script.js"></script>
+    <script></script>
+  </body>
+</html>
